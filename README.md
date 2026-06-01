@@ -10,7 +10,8 @@
 - признаки для временного ряда без подсматривания в будущее;
 - разбиение `train / validation / test` по времени;
 - walk-forward подбор гиперпараметров PDT;
-- сравнение PDT с XGBoost, LSTM и простыми baseline-моделями
+- сравнение PDT с XGBoost, LSTM и простыми baseline-моделями;
+- простой backtest стратегии по прогнозному направлению.
 
 ## Структура
 
@@ -47,6 +48,7 @@ python3 scripts/stage2_pdt_sanity.py
 python3 scripts/stage3_build_datasets.py --horizons 1 5
 python3 scripts/stage3_pdt_pipeline.py --horizons 1 5
 python3 scripts/stage4_model_comparison.py --horizons 1 5 --lstm-max-epochs 35 --lstm-patience 6
+python3 scripts/stage5_backtest.py --cost-bps 5
 ```
 
 ## Проверки
@@ -59,4 +61,8 @@ python3 -m unittest discover -s tests
 
 После walk-forward подбора PDT лучше всего проявился на задаче `RTSI, h=1`: test balanced accuracy `0.546367`
 
-На остальных задачах простые бейзлайн-модели или LSTM остаются сильнее
+На остальных задачах простые бейзлайн-модели или LSTM остаются сильнее.
+
+Backtest на test-периоде использует простую стратегию `long/cash`: если модель прогнозирует рост, держим индекс до горизонта прогноза, иначе сидим в кэше. Для `h=5` берем неперекрывающиеся сделки
+
+На `RTSI, h=1` стратегия PDT дала total return `0.270448` против `0.072432` у buy-and-hold за test-период. На пятидневном горизонте PDT пока не дает устойчивого результата

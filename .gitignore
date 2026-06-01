@@ -4,6 +4,7 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.playwright-mcp/
 .ipynb_checkpoints/
 
 *.md
@@ -22,6 +23,7 @@ data/processed/
 *.parquet
 
 reports/tables/stage4_predictions.csv
+reports/tables/stage5_backtest_equity.csv
 *.pt
 *.pth
 *.pkl
