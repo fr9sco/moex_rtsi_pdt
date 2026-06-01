@@ -1,0 +1,5 @@
+horizon,secid,selection_method,param_id,walk_forward_accuracy,walk_forward_balanced_accuracy,max_depth,min_samples_leaf,max_thresholds,normalize_etc
+1,IMOEX,walk_forward_validation_expanded_grid,6,0.5619662971602364,0.5147845981179314,1,100,8,False
+1,RTSI,walk_forward_validation_expanded_grid,40,0.5364795115072356,0.5286594350673054,6,10,8,False
+5,IMOEX,walk_forward_validation_expanded_grid,36,0.5580333369807055,0.527179056189087,5,50,8,False
+5,RTSI,walk_forward_validation_expanded_grid,41,0.530973836576553,0.5378077330971692,6,10,16,False

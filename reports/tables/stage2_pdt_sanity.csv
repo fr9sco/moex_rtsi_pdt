@@ -1,0 +1,3 @@
+secid,train_rows,validation_rows,train_first_date,train_last_date,validation_first_date,validation_last_date,pdt_directional_accuracy,majority_baseline_accuracy,tree_depth,n_leaves,root_etc_raw,root_etc_normalized,best_feature_by_gain,best_feature_importance
+IMOEX,1745,488,2015-02-02,2021-12-29,2022-01-03,2023-12-28,0.5348360655737705,0.5368852459016393,3,8,356.0,0.20412844036697247,ma_20_gap,0.5645363580962866
+RTSI,1745,487,2015-02-02,2021-12-29,2022-01-03,2023-12-28,0.5195071868583162,0.5277207392197125,3,8,358.0,0.20527522935779816,range_pct,0.5382440673213966

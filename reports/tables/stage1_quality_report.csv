@@ -1,0 +1,3 @@
+secid,duplicated_dates,missing_open,missing_high,missing_low,missing_close,missing_value,non_positive_prices,ohlc_violations,zero_or_missing_value_rows,abs_return_gt_20pct_rows
+IMOEX,0,0,0,0,0,0,0,0,1,2
+RTSI,0,0,0,0,0,0,0,0,0,2

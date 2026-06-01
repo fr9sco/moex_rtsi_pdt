@@ -1,0 +1,22 @@
+if ma_20_gap <= 0.00503561 (gain=156.1897, samples=1745)
+  if return_5d <= -0.00770399 (gain=81.3827, samples=844)
+    if return_5d <= -0.0200297 (gain=51.8704, samples=463)
+      leaf: class=1, samples=224, impurity=63.0000, proba=[0.478, 0.522]
+    else
+      leaf: class=0, samples=239, impurity=71.0000, proba=[0.531, 0.469]
+  else
+    if ma_20_gap <= -0.00507028 (gain=38.3806, samples=381)
+      leaf: class=1, samples=184, impurity=54.0000, proba=[0.413, 0.587]
+    else
+      leaf: class=1, samples=197, impurity=61.0000, proba=[0.462, 0.538]
+else
+  if gap_pct <= 0.000277431 (gain=93.3862, samples=901)
+    if ma_5_gap <= 0.00472567 (gain=50.5223, samples=471)
+      leaf: class=1, samples=258, impurity=72.0000, proba=[0.461, 0.539]
+    else
+      leaf: class=1, samples=213, impurity=62.0000, proba=[0.488, 0.512]
+  else
+    if ma_5_gap <= 0.00692655 (gain=48.5488, samples=430)
+      leaf: class=1, samples=208, impurity=66.0000, proba=[0.481, 0.519]
+    else
+      leaf: class=1, samples=222, impurity=63.0000, proba=[0.441, 0.559]

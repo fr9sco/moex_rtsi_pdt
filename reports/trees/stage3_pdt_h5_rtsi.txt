@@ -1,0 +1,190 @@
+if rolling_vol_20d <= 0.0137661 (gain=137.8663, samples=2199)
+  if rsi_14 <= 52.7942 (gain=75.6010, samples=1173)
+    if ma_50_gap <= -0.00303122 (gain=49.2633, samples=547)
+      if rolling_vol_20d <= 0.0118473 (gain=29.5342, samples=292)
+        if position_20d <= 0.178369 (gain=14.0577, samples=156)
+          if return_20d <= -0.0650635 (gain=9.6733, samples=101)
+            leaf: class=0, samples=34, impurity=16.0000, proba=[0.559, 0.441]
+          else
+            leaf: class=1, samples=67, impurity=18.0000, proba=[0.463, 0.537]
+        else
+          if ma_5_gap <= 0.00294146 (gain=12.0000, samples=55)
+            leaf: class=1, samples=29, impurity=12.0000, proba=[0.345, 0.655]
+          else
+            leaf: class=1, samples=26, impurity=12.0000, proba=[0.346, 0.654]
+      else
+        if ma_50_gap <= -0.0428613 (gain=18.0221, samples=136)
+          if return_5d <= -0.031633 (gain=8.3636, samples=55)
+            leaf: class=1, samples=26, impurity=9.0000, proba=[0.385, 0.615]
+          else
+            leaf: class=0, samples=29, impurity=14.0000, proba=[0.586, 0.414]
+        else
+          if rsi_14 <= 39.3105 (gain=8.6296, samples=81)
+            leaf: class=1, samples=33, impurity=14.0000, proba=[0.394, 0.606]
+          else
+            leaf: class=0, samples=48, impurity=18.0000, proba=[0.583, 0.417]
+    else
+      if rolling_vol_20d <= 0.0102837 (gain=24.3333, samples=255)
+        if ma_50_gap <= 0.0117357 (gain=15.4706, samples=119)
+          if range_pct <= 0.00974639 (gain=8.3571, samples=56)
+            leaf: class=1, samples=19, impurity=9.0000, proba=[0.421, 0.579]
+          else
+            leaf: class=1, samples=37, impurity=13.0000, proba=[0.459, 0.541]
+        else
+          if gap_pct <= -0.000301236 (gain=9.0000, samples=63)
+            leaf: class=0, samples=21, impurity=10.0000, proba=[0.762, 0.238]
+          else
+            leaf: class=0, samples=42, impurity=13.0000, proba=[0.69, 0.31]
+      else
+        if rsi_14 <= 46.84 (gain=17.4706, samples=136)
+          if return_1d <= -0.00178617 (gain=9.6111, samples=72)
+            leaf: class=0, samples=29, impurity=12.0000, proba=[0.586, 0.414]
+          else
+            leaf: class=0, samples=43, impurity=16.0000, proba=[0.581, 0.419]
+        else
+          if intraday_return <= 0.00299699 (gain=10.0625, samples=64)
+            leaf: class=1, samples=34, impurity=12.0000, proba=[0.206, 0.794]
+          else
+            leaf: class=1, samples=30, impurity=14.0000, proba=[0.433, 0.567]
+  else
+    if ma_50_gap <= 0.0431886 (gain=43.7987, samples=626)
+      if rolling_vol_20d <= 0.0107757 (gain=25.1918, samples=292)
+        if return_5d <= 0.00942546 (gain=14.5882, samples=136)
+          if return_20d <= 0.0226415 (gain=10.4062, samples=64)
+            leaf: class=1, samples=30, impurity=11.0000, proba=[0.233, 0.767]
+          else
+            leaf: class=0, samples=34, impurity=14.0000, proba=[0.618, 0.382]
+        else
+          if ma_5_gap <= 0.00485719 (gain=6.0000, samples=72)
+            leaf: class=1, samples=24, impurity=12.0000, proba=[0.458, 0.542]
+          else
+            leaf: class=1, samples=48, impurity=15.0000, proba=[0.271, 0.729]
+      else
+        if rsi_14 <= 59.5881 (gain=18.2115, samples=156)
+          if return_1d <= -0.0022455 (gain=11.3810, samples=63)
+            leaf: class=0, samples=29, impurity=12.0000, proba=[0.517, 0.483]
+          else
+            leaf: class=1, samples=34, impurity=15.0000, proba=[0.353, 0.647]
+        else
+          if rolling_vol_20d <= 0.0116594 (gain=10.9892, samples=93)
+            leaf: class=1, samples=37, impurity=14.0000, proba=[0.243, 0.757]
+          else
+            leaf: class=1, samples=56, impurity=19.0000, proba=[0.446, 0.554]
+    else
+      if ma_20_gap <= 0.0299248 (gain=28.2036, samples=334)
+        if return_20d <= 0.0527708 (gain=17.9403, samples=134)
+          if rolling_vol_20d <= 0.00997415 (gain=10.3239, samples=71)
+            leaf: class=0, samples=38, impurity=17.0000, proba=[0.684, 0.316]
+          else
+            leaf: class=1, samples=33, impurity=12.0000, proba=[0.424, 0.576]
+        else
+          if rsi_14 <= 65.7168 (gain=10.0000, samples=63)
+            leaf: class=1, samples=34, impurity=13.0000, proba=[0.441, 0.559]
+          else
+            leaf: class=1, samples=29, impurity=13.0000, proba=[0.448, 0.552]
+      else
+        if return_20d <= 0.0816094 (gain=16.3250, samples=200)
+          if gap_pct <= 0.000302935 (gain=8.9247, samples=93)
+            leaf: class=1, samples=43, impurity=16.0000, proba=[0.163, 0.837]
+          else
+            leaf: class=1, samples=50, impurity=18.0000, proba=[0.44, 0.56]
+        else
+          if return_20d <= 0.106196 (gain=12.2056, samples=107)
+            leaf: class=0, samples=64, impurity=20.0000, proba=[0.516, 0.484]
+          else
+            leaf: class=0, samples=43, impurity=17.0000, proba=[0.512, 0.488]
+else
+  if ma_50_gap <= -0.00336493 (gain=77.6686, samples=1026)
+    if rolling_vol_20d <= 0.0184949 (gain=48.4662, samples=547)
+      if ma_5_gap <= -0.0114349 (gain=27.4000, samples=255)
+        if rsi_14 <= 29.1141 (gain=14.8039, samples=102)
+          if return_20d <= -0.0738396 (gain=8.0000, samples=41)
+            leaf: class=1, samples=22, impurity=9.0000, proba=[0.227, 0.773]
+          else
+            leaf: class=1, samples=19, impurity=9.0000, proba=[0.421, 0.579]
+        else
+          if return_5d <= -0.0338935 (gain=6.4262, samples=61)
+            leaf: class=0, samples=29, impurity=11.0000, proba=[0.621, 0.379]
+          else
+            leaf: class=1, samples=32, impurity=14.0000, proba=[0.344, 0.656]
+      else
+        if rolling_vol_20d <= 0.0157874 (gain=12.2484, samples=153)
+          if return_20d <= -0.0456247 (gain=14.0122, samples=82)
+            leaf: class=0, samples=33, impurity=13.0000, proba=[0.576, 0.424]
+          else
+            leaf: class=1, samples=49, impurity=18.0000, proba=[0.469, 0.531]
+        else
+          if return_5d <= -0.000200786 (gain=9.4507, samples=71)
+            leaf: class=0, samples=29, impurity=10.0000, proba=[0.586, 0.414]
+          else
+            leaf: class=0, samples=42, impurity=16.0000, proba=[0.5, 0.5]
+    else
+      if rolling_vol_20d <= 0.0333552 (gain=25.4178, samples=292)
+        if position_20d <= 0.197389 (gain=21.6400, samples=175)
+          if return_5d <= -0.0846824 (gain=10.8182, samples=77)
+            leaf: class=0, samples=21, impurity=12.0000, proba=[0.571, 0.429]
+          else
+            leaf: class=1, samples=56, impurity=15.0000, proba=[0.446, 0.554]
+        else
+          if rsi_14 <= 48.17 (gain=12.3469, samples=98)
+            leaf: class=1, samples=52, impurity=21.0000, proba=[0.404, 0.596]
+          else
+            leaf: class=0, samples=46, impurity=16.0000, proba=[0.522, 0.478]
+      else
+        if position_20d <= 0.435311 (gain=8.0000, samples=117)
+          if ma_50_gap <= -0.225496 (gain=4.5385, samples=65)
+            leaf: class=1, samples=30, impurity=12.0000, proba=[0.233, 0.767]
+          else
+            leaf: class=1, samples=35, impurity=11.0000, proba=[0.457, 0.543]
+        else
+          if gap_pct <= 0.00743398 (gain=6.0385, samples=52)
+            leaf: class=1, samples=34, impurity=11.0000, proba=[0.382, 0.618]
+          else
+            leaf: class=1, samples=18, impurity=8.0000, proba=[0.278, 0.722]
+  else
+    if rsi_14 <= 58.0262 (gain=42.9353, samples=479)
+      if rolling_vol_20d <= 0.0165744 (gain=25.3438, samples=224)
+        if position_20d <= 0.504537 (gain=12.3714, samples=105)
+          if position_20d <= 0.433277 (gain=7.0000, samples=48)
+            leaf: class=0, samples=36, impurity=11.0000, proba=[0.667, 0.333]
+          else
+            leaf: class=0, samples=12, impurity=7.0000, proba=[0.5, 0.5]
+        else
+          if rolling_vol_20d <= 0.01518 (gain=9.0000, samples=57)
+            leaf: class=1, samples=30, impurity=11.0000, proba=[0.267, 0.733]
+          else
+            leaf: class=0, samples=27, impurity=11.0000, proba=[0.667, 0.333]
+      else
+        if return_1d <= 0.00719966 (gain=15.5966, samples=119)
+          if ma_50_gap <= 0.0504004 (gain=7.9296, samples=71)
+            leaf: class=1, samples=38, impurity=13.0000, proba=[0.421, 0.579]
+          else
+            leaf: class=1, samples=33, impurity=11.0000, proba=[0.182, 0.818]
+        else
+          if ma_50_gap <= 0.0383606 (gain=11.0000, samples=48)
+            leaf: class=1, samples=26, impurity=10.0000, proba=[0.385, 0.615]
+          else
+            leaf: class=0, samples=22, impurity=10.0000, proba=[0.5, 0.5]
+    else
+      if rsi_14 <= 67.5512 (gain=24.9333, samples=255)
+        if return_20d <= 0.0399877 (gain=14.2101, samples=119)
+          if rolling_vol_20d <= 0.0153353 (gain=11.0000, samples=48)
+            leaf: class=0, samples=16, impurity=6.0000, proba=[0.875, 0.125]
+          else
+            leaf: class=0, samples=32, impurity=9.0000, proba=[0.625, 0.375]
+        else
+          if gap_pct <= 0.000539379 (gain=8.0423, samples=71)
+            leaf: class=1, samples=29, impurity=11.0000, proba=[0.379, 0.621]
+          else
+            leaf: class=1, samples=42, impurity=16.0000, proba=[0.476, 0.524]
+      else
+        if rolling_vol_20d <= 0.0201227 (gain=15.9412, samples=136)
+          if return_5d <= 0.0294342 (gain=9.4722, samples=72)
+            leaf: class=0, samples=38, impurity=13.0000, proba=[0.579, 0.421]
+          else
+            leaf: class=0, samples=34, impurity=12.0000, proba=[0.647, 0.353]
+        else
+          if ma_5_gap <= 0.0305525 (gain=7.1250, samples=64)
+            leaf: class=1, samples=46, impurity=14.0000, proba=[0.391, 0.609]
+          else
+            leaf: class=1, samples=18, impurity=10.0000, proba=[0.333, 0.667]

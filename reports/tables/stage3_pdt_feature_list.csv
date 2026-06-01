@@ -1,0 +1,14 @@
+feature
+return_1d
+return_5d
+return_20d
+range_pct
+gap_pct
+intraday_return
+ma_5_gap
+ma_20_gap
+ma_50_gap
+rolling_vol_20d
+rsi_14
+position_20d
+value_change_1d

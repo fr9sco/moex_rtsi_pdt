@@ -1,0 +1,4 @@
+if range_pct <= 0.0112368 (gain=181.0073, samples=2202)
+  leaf: class=1, samples=944, impurity=211.0000, proba=[0.456, 0.544]
+else
+  leaf: class=1, samples=1258, impurity=267.0000, proba=[0.479, 0.521]

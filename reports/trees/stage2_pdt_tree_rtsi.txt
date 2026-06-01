@@ -1,0 +1,22 @@
+if range_pct <= 0.0166503 (gain=158.4183, samples=1745)
+  if return_1d <= 0.00156652 (gain=87.3552, samples=901)
+    if gap_pct <= -0.000790745 (gain=48.4197, samples=436)
+      leaf: class=0, samples=225, impurity=64.0000, proba=[0.502, 0.498]
+    else
+      leaf: class=1, samples=211, impurity=59.0000, proba=[0.493, 0.507]
+  else
+    if return_1d <= 0.00787867 (gain=52.0645, samples=465)
+      leaf: class=1, samples=255, impurity=71.0000, proba=[0.412, 0.588]
+    else
+      leaf: class=0, samples=210, impurity=62.0000, proba=[0.5, 0.5]
+else
+  if return_5d <= -0.003443 (gain=89.4502, samples=844)
+    if return_5d <= -0.0263321 (gain=44.2157, samples=408)
+      leaf: class=1, samples=224, impurity=69.0000, proba=[0.46, 0.54]
+    else
+      leaf: class=1, samples=184, impurity=53.0000, proba=[0.435, 0.565]
+  else
+    if gap_pct <= 0.00116913 (gain=44.9358, samples=436)
+      leaf: class=1, samples=225, impurity=66.0000, proba=[0.471, 0.529]
+    else
+      leaf: class=1, samples=211, impurity=62.0000, proba=[0.436, 0.564]

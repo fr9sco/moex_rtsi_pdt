@@ -1,0 +1,7 @@
+split,secid,rows,first_date,last_date
+train,IMOEX,1765,2015-01-05,2021-12-30
+train,RTSI,1765,2015-01-05,2021-12-30
+validation,IMOEX,489,2022-01-03,2023-12-29
+validation,RTSI,488,2022-01-03,2023-12-29
+test,IMOEX,610,2024-01-03,2026-05-27
+test,RTSI,610,2024-01-03,2026-05-27
