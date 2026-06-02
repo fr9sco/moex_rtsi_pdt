@@ -19,6 +19,8 @@
 src/                  код пайплайна и моделей
 scripts/              запуск этапов эксперимента
 tests/                unit-тесты
+backend/              FastAPI для dashboard
+frontend/             React dashboard
 reports/figures/      небольшие графики для отчета
 reports/tables/       итоговые таблицы экспериментов
 reports/trees/        текстовые выгрузки PDT-деревьев
@@ -56,6 +58,26 @@ python3 scripts/stage5_backtest.py --cost-bps 5
 ```bash
 python3 -m unittest discover -s tests
 ```
+
+## Веб-панель
+
+Backend:
+
+```bash
+python3 -m uvicorn backend.main:app --reload --port 8000
+```
+
+Для графиков прогнозов и equity нужны файлы `reports/tables/stage4_predictions.csv` и `reports/tables/stage5_backtest_equity.csv`. Если их нет локально, сначала запусти этапы 4 и 5.
+
+Frontend:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+После запуска страница доступна по адресу `http://127.0.0.1:5173`.
 
 ## Текущий результат
 
