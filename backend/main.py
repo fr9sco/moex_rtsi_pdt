@@ -118,6 +118,23 @@ def backtest(
     return rows_to_dicts(df)
 
 
+@app.get("/api/backtest-sensitivity")
+def backtest_sensitivity(
+    horizon: Optional[int] = Query(default=None, ge=1),
+    secid: Optional[str] = None,
+):
+    df = read_csv("stage5_backtest_sensitivity.csv")
+    if horizon is not None:
+        df = df[df["horizon"] == horizon]
+    if secid:
+        df = df[df["secid"] == secid]
+    df = df.sort_values(
+        ["horizon", "secid", "model", "cost_bps", "min_signal_bps"],
+        ascending=True,
+    )
+    return rows_to_dicts(df)
+
+
 @app.get("/api/predictions")
 def predictions(
     horizon: int = Query(default=1, ge=1),
@@ -156,6 +173,7 @@ def equity(
         "date",
         "future_date",
         "position",
+        "signal_strength_bps",
         "strategy_return",
         "buy_hold_return",
         "strategy_equity",

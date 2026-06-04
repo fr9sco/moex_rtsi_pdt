@@ -20,6 +20,10 @@ export function getBacktest(horizon, secid) {
   return getJson(`/api/backtest?horizon=${horizon}&secid=${secid}`);
 }
 
+export function getBacktestSensitivity(horizon, secid) {
+  return getJson(`/api/backtest-sensitivity?horizon=${horizon}&secid=${secid}`);
+}
+
 export function getPredictions(horizon, secid, model) {
   return getJson(
     `/api/predictions?horizon=${horizon}&secid=${secid}&model=${encodeURIComponent(model)}`

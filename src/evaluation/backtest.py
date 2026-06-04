@@ -4,7 +4,11 @@ import numpy as np
 import pandas as pd
 
 
-def make_strategy_trades(predictions: pd.DataFrame, cost_bps: float = 5.0) -> pd.DataFrame:
+def make_strategy_trades(
+    predictions: pd.DataFrame,
+    cost_bps: float = 5.0,
+    min_signal_bps: float = 0.0,
+) -> pd.DataFrame:
     rows = []
     cost = cost_bps / 10_000
 
@@ -12,10 +16,20 @@ def make_strategy_trades(predictions: pd.DataFrame, cost_bps: float = 5.0) -> pd
     for (horizon, secid, model), group in predictions.groupby(group_columns, sort=True):
         group = group.sort_values("date").reset_index(drop=True)
         trades = group.iloc[:: int(horizon)].copy()
-        position = trades["predicted_up"].astype(int)
+
+        if "predicted_return" in trades:
+            signal_strength = trades["predicted_return"].astype(float).abs() * 10_000
+        elif min_signal_bps > 0:
+            raise ValueError("predicted_return is required when min_signal_bps > 0")
+        else:
+            signal_strength = pd.Series(np.inf, index=trades.index)
+
+        strong_signal = signal_strength >= min_signal_bps
+        position = (trades["predicted_up"].astype(int) & strong_signal.astype(int)).astype(int)
         previous_position = position.shift(1, fill_value=0)
 
         trades["position"] = position
+        trades["signal_strength_bps"] = signal_strength
         trades["position_change"] = (position - previous_position).abs()
         trades["transaction_cost"] = trades["position_change"] * cost
         trades["strategy_return"] = position * trades["future_return"] - trades["transaction_cost"]
@@ -23,6 +37,7 @@ def make_strategy_trades(predictions: pd.DataFrame, cost_bps: float = 5.0) -> pd
         trades["strategy_equity"] = (1 + trades["strategy_return"]).cumprod()
         trades["buy_hold_equity"] = (1 + trades["buy_hold_return"]).cumprod()
         trades["cost_bps"] = cost_bps
+        trades["min_signal_bps"] = min_signal_bps
 
         rows.append(trades)
 
@@ -31,7 +46,8 @@ def make_strategy_trades(predictions: pd.DataFrame, cost_bps: float = 5.0) -> pd
 
 def summarize_backtest(trades: pd.DataFrame) -> pd.DataFrame:
     rows = []
-    for (horizon, secid, model), group in trades.groupby(["horizon", "secid", "model"], sort=True):
+    group_columns = ["horizon", "secid", "model", "cost_bps", "min_signal_bps"]
+    for (horizon, secid, model, cost_bps, min_signal_bps), group in trades.groupby(group_columns, sort=True):
         strategy = describe_returns(group["strategy_return"], int(horizon))
         buy_hold = describe_returns(group["buy_hold_return"], int(horizon))
 
@@ -43,7 +59,8 @@ def summarize_backtest(trades: pd.DataFrame) -> pd.DataFrame:
                 "rows": len(group),
                 "first_date": group["date"].min(),
                 "last_date": group["date"].max(),
-                "cost_bps": float(group["cost_bps"].iloc[0]),
+                "cost_bps": float(cost_bps),
+                "min_signal_bps": float(min_signal_bps),
                 "exposure": float(group["position"].mean()),
                 "entries": int(((group["position"] == 1) & (group["position"].shift(1, fill_value=0) == 0)).sum()),
                 **{f"strategy_{key}": value for key, value in strategy.items()},

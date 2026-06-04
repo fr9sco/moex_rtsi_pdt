@@ -45,6 +45,26 @@ class TestStage5Backtest(unittest.TestCase):
         self.assertAlmostEqual(trades["strategy_return"].iloc[1], 0.10)
         self.assertAlmostEqual(trades["strategy_return"].iloc[2], -0.001)
 
+    def test_confidence_threshold_moves_weak_signals_to_cash(self):
+        predictions = pd.DataFrame(
+            {
+                "horizon": [1, 1, 1],
+                "secid": ["T"] * 3,
+                "model": ["M"] * 3,
+                "date": pd.date_range("2024-01-01", periods=3),
+                "future_date": pd.date_range("2024-01-02", periods=3),
+                "future_return": [0.10, 0.10, 0.10],
+                "predicted_return": [0.0005, 0.0030, -0.0040],
+                "predicted_up": [1, 1, 0],
+            }
+        )
+
+        trades = make_strategy_trades(predictions, cost_bps=0, min_signal_bps=10)
+
+        self.assertEqual(trades["position"].tolist(), [0, 1, 0])
+        self.assertAlmostEqual(trades["strategy_return"].iloc[0], 0.0)
+        self.assertAlmostEqual(trades["strategy_return"].iloc[1], 0.10)
+
     def test_describe_returns_has_drawdown(self):
         metrics = describe_returns(pd.Series([0.10, -0.20, 0.05]), horizon=1)
 

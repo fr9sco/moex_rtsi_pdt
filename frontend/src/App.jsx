@@ -2,11 +2,13 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   Activity,
   BarChart3,
+  BookOpen,
   Brain,
   CandlestickChart,
   GitBranch,
   LineChart as LineIcon,
   RefreshCw,
+  SlidersHorizontal,
   Table2,
   TrendingUp,
 } from "lucide-react";
@@ -23,6 +25,7 @@ import {
 } from "recharts";
 import {
   getBacktest,
+  getBacktestSensitivity,
   getEquity,
   getFeatureImportance,
   getModelComparison,
@@ -48,6 +51,16 @@ const modelNames = {
   LastHorizonReturn: "Last horizon",
   NaivePrice: "Naive",
 };
+
+const SENSITIVITY_MODELS = [
+  "PDT_direction_median_return",
+  "XGBoostRegressor",
+  "LSTMRegressor",
+  "LastDailyReturn",
+  "LastHorizonReturn",
+];
+
+const chartColors = ["#2f6f73", "#a45f38", "#415a77", "#7b6d4d", "#6b5876"];
 
 function formatNumber(value, digits = 3) {
   if (value === null || value === undefined || Number.isNaN(Number(value))) return "—";
@@ -106,6 +119,17 @@ function Select({ label, value, onChange, options }) {
       </select>
     </label>
   );
+}
+
+function makeSensitivityChart(rows, xKey, filterFn) {
+  const grouped = new Map();
+  rows.filter(filterFn).forEach((row) => {
+    const x = Number(row[xKey]);
+    if (!grouped.has(x)) grouped.set(x, { [xKey]: x });
+    grouped.get(x)[modelLabel(row.model)] = Number(row.strategy_total_return || 0);
+  });
+
+  return Array.from(grouped.values()).sort((a, b) => Number(a[xKey]) - Number(b[xKey]));
 }
 
 function StatTable({ rows, columns }) {
@@ -178,6 +202,7 @@ export default function App() {
   const [summary, setSummary] = useState(null);
   const [comparison, setComparison] = useState([]);
   const [backtest, setBacktest] = useState([]);
+  const [sensitivity, setSensitivity] = useState([]);
   const [predictions, setPredictions] = useState([]);
   const [equity, setEquity] = useState([]);
   const [pdtFeatures, setPdtFeatures] = useState([]);
@@ -194,15 +219,17 @@ export default function App() {
     Promise.all([
       getModelComparison(horizon, secid),
       getBacktest(horizon, secid),
+      getBacktestSensitivity(horizon, secid),
       getPredictions(horizon, secid, model),
       getEquity(horizon, secid, model),
       getFeatureImportance("pdt", horizon, secid),
       getFeatureImportance("xgboost", horizon, secid),
       getPdtTree(horizon, secid),
     ])
-      .then(([comparisonRows, backtestRows, predictionRows, equityRows, pdtRows, xgbRows, treeResult]) => {
+      .then(([comparisonRows, backtestRows, sensitivityRows, predictionRows, equityRows, pdtRows, xgbRows, treeResult]) => {
         setComparison(comparisonRows);
         setBacktest(backtestRows);
+        setSensitivity(sensitivityRows);
         setPredictions(predictionRows);
         setEquity(equityRows);
         setPdtFeatures(pdtRows);
@@ -248,6 +275,18 @@ export default function App() {
     model: modelLabel(row.model),
     rmse: Number(row.rmse || 0),
   }));
+
+  const commissionChart = makeSensitivityChart(
+    sensitivity,
+    "cost_bps",
+    (row) => Number(row.min_signal_bps) === 0 && SENSITIVITY_MODELS.includes(row.model)
+  );
+
+  const thresholdChart = makeSensitivityChart(
+    sensitivity,
+    "min_signal_bps",
+    (row) => Number(row.cost_bps) === 5 && SENSITIVITY_MODELS.includes(row.model)
+  );
 
   return (
     <main className="app-shell">
@@ -326,6 +365,10 @@ export default function App() {
             <button className={tab === "tree" ? "active" : ""} onClick={() => setTab("tree")} type="button">
               <GitBranch size={17} />
               PDT
+            </button>
+            <button className={tab === "methodology" ? "active" : ""} onClick={() => setTab("methodology")} type="button">
+              <BookOpen size={17} />
+              методология
             </button>
           </nav>
 
@@ -423,7 +466,7 @@ export default function App() {
                   )}
                 </ChartArea>
               </div>
-              <div className="panel">
+              <div className="panel wide stats-panel">
                 <div className="panel-head">
                   <h2>Текущая модель</h2>
                   <span>test</span>
@@ -467,10 +510,10 @@ export default function App() {
                   )}
                 </ChartArea>
               </div>
-              <div className="panel">
+              <div className="panel wide stats-panel">
                 <div className="panel-head">
                   <h2>Показатели стратегии</h2>
-                  <span>cost 5 bps</span>
+                  <span>cost 5 bps, signal 0 bps</span>
                 </div>
                 {currentBacktestRow && (
                   <div className="model-stats">
@@ -482,6 +525,66 @@ export default function App() {
                     <div><span>entries</span><strong>{currentBacktestRow.entries}</strong></div>
                   </div>
                 )}
+              </div>
+              <div className="panel">
+                <div className="panel-head">
+                  <h2>Чувствительность к комиссии</h2>
+                  <span>threshold 0 bps</span>
+                </div>
+                <ChartArea>
+                  {commissionChart.length ? (
+                    (width, height) => (
+                      <LineChart data={commissionChart} width={width} height={height}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="cost_bps" tick={{ fontSize: 12 }} />
+                        <YAxis tickFormatter={(value) => `${Math.round(value * 100)}%`} />
+                        <Tooltip formatter={(value) => formatPercent(value, 1)} labelFormatter={(value) => `commission ${value} bps`} />
+                        <Legend />
+                        {SENSITIVITY_MODELS.map((name, index) => (
+                          <Line
+                            dataKey={modelLabel(name)}
+                            key={name}
+                            stroke={chartColors[index]}
+                            strokeWidth={2}
+                            dot
+                          />
+                        ))}
+                      </LineChart>
+                    )
+                  ) : (
+                    () => <LoadingBlock />
+                  )}
+                </ChartArea>
+              </div>
+              <div className="panel">
+                <div className="panel-head">
+                  <h2>Порог уверенности</h2>
+                  <span>cost 5 bps</span>
+                </div>
+                <ChartArea>
+                  {thresholdChart.length ? (
+                    (width, height) => (
+                      <LineChart data={thresholdChart} width={width} height={height}>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="min_signal_bps" tick={{ fontSize: 12 }} />
+                        <YAxis tickFormatter={(value) => `${Math.round(value * 100)}%`} />
+                        <Tooltip formatter={(value) => formatPercent(value, 1)} labelFormatter={(value) => `signal ${value} bps`} />
+                        <Legend />
+                        {SENSITIVITY_MODELS.map((name, index) => (
+                          <Line
+                            dataKey={modelLabel(name)}
+                            key={name}
+                            stroke={chartColors[index]}
+                            strokeWidth={2}
+                            dot
+                          />
+                        ))}
+                      </LineChart>
+                    )
+                  ) : (
+                    () => <LoadingBlock />
+                  )}
+                </ChartArea>
               </div>
               <div className="panel wide">
                 <div className="panel-head">
@@ -498,6 +601,7 @@ export default function App() {
                     { key: "strategy_max_drawdown", label: "max dd", render: (row) => formatPercent(row.strategy_max_drawdown, 1) },
                     { key: "exposure", label: "exposure", render: (row) => formatPercent(row.exposure, 1) },
                     { key: "entries", label: "entries" },
+                    { key: "min_signal_bps", label: "signal bps", render: (row) => formatNumber(row.min_signal_bps, 0) },
                   ]}
                 />
               </div>
@@ -554,6 +658,51 @@ export default function App() {
                   <span>выгрузка из этапа 3</span>
                 </div>
                 <pre className="tree-box">{tree}</pre>
+              </div>
+            </section>
+          )}
+
+          {tab === "methodology" && (
+            <section className="method-grid">
+              <div className="method-card">
+                <BookOpen size={22} />
+                <div>
+                  <h2>Данные и split</h2>
+                  <p>
+                    Используются дневные данные MOEX ISS за 2015-2026 годы. Разделение идет по времени:
+                    train до конца 2021 года, validation за 2022-2023 годы, test за 2024-2026 годы.
+                  </p>
+                </div>
+              </div>
+              <div className="method-card">
+                <GitBranch size={22} />
+                <div>
+                  <h2>PDT</h2>
+                  <p>
+                    Дерево выбирает split по ETC gain. Порядок меток внутри узла сохраняется, поэтому критерий
+                    учитывает не только доли классов, но и структуру последовательности.
+                  </p>
+                </div>
+              </div>
+              <div className="method-card">
+                <BarChart3 size={22} />
+                <div>
+                  <h2>Сравнение</h2>
+                  <p>
+                    PDT сравнивается с XGBoost, LSTM и простыми baseline-моделями. Гиперпараметры выбираются на
+                    validation-периоде, test используется только для финальной оценки.
+                  </p>
+                </div>
+              </div>
+              <div className="method-card">
+                <SlidersHorizontal size={22} />
+                <div>
+                  <h2>Backtest</h2>
+                  <p>
+                    Стратегия long/cash входит в позицию только при прогнозе роста. Дополнительно проверяются
+                    комиссии 0-20 bps и порог сигнала 0-100 bps по модулю прогнозной доходности.
+                  </p>
+                </div>
               </div>
             </section>
           )}
